@@ -22,9 +22,39 @@ export default function EmployeePages({ employees }) {
         }
         supportRequestUrl="https://www.example.com/support"
       >
-        {({ page, goPrevious, goNext }) => (
+        {({
+          page,
+          goPrevious,
+          goNext,
+          goToLabel,
+          currentPageLabel,
+          pageLabels,
+          showHelpScreen,
+          pageInfoIsLoading,
+          pageInfoError,
+          pageInfo
+        }) => (
           <>
-            <div />
+            <div>
+              <select onChange={e => goToLabel(e.target.value)}>
+                {pageLabels.map(label => (
+                  <option
+                    key={label}
+                    value={label}
+                    selected={label === currentPageLabel}
+                  >
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <button onClick={goPrevious}>Previous</button>
+              <button onClick={goNext}>Next</button>
+              <button onClick={showHelpScreen}>Help</button>
+            </div>
+            <div>{page}</div>
+            {pageInfoIsLoading && <div>Loading more info...</div>}
+            {pageInfoError && <div>Error fetching info: {pageInfoError}</div>}
+            {pageInfo && <div># of Likes: {pageInfo.likes}</div>}
           </>
         )}
       </Pager>
