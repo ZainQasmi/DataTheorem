@@ -1,20 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import HelpForm from "./HelpForm";
 
 class Pager extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       currentPageIndex: 0,
-//       currentPageLabel: props.currentPageLabel,
-//       page: props.pages[0],
-//       pageLabels: props.pages.map((page, i) => {
-//         return this.props.getLabel(i);
-//       }),
-//       showHelp: false
-//     };
-//   }
-
   state = {
     currentPageIndex: 0,
     currentPageLabel: this.props.currentPageLabel,
@@ -22,14 +11,14 @@ class Pager extends Component {
     pageLabels: this.props.pages.map((page, i) => {
       return this.props.getLabel(i);
     }),
-    showHelp: false
+    showHelp: false,
+    response: ""
   };
 
   goPrevious = () => {
     const { currentPageIndex, pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = (currentPageIndex - 1 + pages.length) % pages.length;
-    // console.log(this.props.children.page);
     this.setState({
       currentPageIndex: newIndex,
       currentPageLabel: pageLabels[newIndex],
@@ -41,7 +30,6 @@ class Pager extends Component {
     const { currentPageIndex, pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = (currentPageIndex + 1 + pages.length) % pages.length;
-    console.log(newIndex);
     this.setState({
       currentPageIndex: newIndex,
       currentPageLabel: pageLabels[newIndex],
@@ -66,16 +54,26 @@ class Pager extends Component {
     }));
   };
 
-  toggleHelp = () => {
-    console.log("what is wrong here");
-    this.setState(prevState => ({
-      showHelp: !prevState.showHelp
-    }));
-  };
+  showErrorMessage = (response) => {
+    if (response > 200 && response < 205) {
+        this.setState({response: "Success: " + response + " - Form Submitted"})
+    }
+    if (response > 400) {
+        this.setState({response: "Error: " + response})
+    }
+    
+  }
 
   render() {
     return this.state.showHelp ? (
-      <HelpForm toggleHelp={this.toggleHelp} />
+      <>
+        <HelpForm
+          url={this.props.supportRequestUrl}
+          toggleHelp={this.showHelpScreen}
+          showErrorMessage={this.showErrorMessage}
+        />
+        <p>{this.state.response}</p>
+      </>
     ) : (
       this.props.children({
         page: this.state.page,
@@ -89,5 +87,18 @@ class Pager extends Component {
     );
   }
 }
+
+Pager.defaultProps = {
+  supportRequestUrl: null,
+  pageInfoUrl: null
+};
+
+Pager.propTypes = {
+  pages: PropTypes.node.isRequired,
+  getLabel: PropTypes.func.isRequired,
+  pageInfoUrl: PropTypes.func,
+  supportRequestUrl: PropTypes.string,
+  children: PropTypes.func.isRequired
+};
 
 export default Pager;

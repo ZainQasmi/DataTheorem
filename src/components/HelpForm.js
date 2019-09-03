@@ -1,16 +1,18 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Formik } from "formik";
 
-const HelpForm = ({ url, toggleHelp }) => (
+const HelpForm = ({ url, toggleHelp, showErrorMessage }) => (
   <div>
     <h1>Help Form</h1>
     <Formik
-      initialValues={{ name: "" }}
+      initialValues={{ name: "", email: "", message: "" }}
       validateOnChange={false}
       validate={values => {
         let errors = {};
         if (!values.name) {
           errors.name = "Required";
+          // eslint-disable-next-line
         } else if (/^[\p{L} \.'\-]+$$/i.test(values.name)) {
           errors.name = "Invalid name";
         }
@@ -27,16 +29,29 @@ const HelpForm = ({ url, toggleHelp }) => (
         return errors;
       }}
       onSubmit={(values, actions) => {
-        fetch(url, {
-          method: "POST",
-          body: JSON.stringify(values)
-        })
-          .then(res => {
-            actions.setSubmitting(false);
-            return res.json();
+        console.log(url);
+        console.log(values);
+        if (url) {
+          fetch(url, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(values)
           })
-          .then(response => console.log("Success:", JSON.stringify(response)))
-          .catch(error => console.error("Error:", error));
+            .then(res => {
+              actions.resetForm();
+              actions.setSubmitting(false);
+              // return res.json();
+              return res.status;
+            })
+            // .then(response => console.log("Success:", JSON.stringify(response)))
+            .then(response => showErrorMessage(response))
+            .catch(error => console.error("Error:", error));
+        } else {
+          alert("Please specify a support request URL.");
+        }
       }}
       render={props => (
         <form onSubmit={props.handleSubmit}>
@@ -83,5 +98,10 @@ const HelpForm = ({ url, toggleHelp }) => (
     <button onClick={toggleHelp}>Return</button>
   </div>
 );
+
+HelpForm.propTypes = {
+  url: PropTypes.string,
+  toggleHelp: PropTypes.func.isRequired
+};
 
 export default HelpForm;
