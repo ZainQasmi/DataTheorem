@@ -61,7 +61,10 @@ class Pager extends Component {
     if (response > 400) {
         this.setState({response: "Error: " + response})
     }
-    
+  }
+
+  pageInfoUrl = (label) => {
+      
   }
 
   render() {

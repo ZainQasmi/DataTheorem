@@ -1,6 +1,5 @@
 import React from "react";
 import Pager from "./Pager";
-// import Pager from '[your-package-name-here]';
 
 export default function EmployeePages({ employees }) {
   return (
@@ -18,7 +17,6 @@ export default function EmployeePages({ employees }) {
           i => `${employees[i].last_name}, ${employees[i].first_name}`
         }
         pageInfoUrl={(label) => `https://www.example.com/employees/${label}`}
-        // supportRequestUrl="http://localhost:3000/support"
         supportRequestUrl="http://localhost:3000/support"
       >
         {({
