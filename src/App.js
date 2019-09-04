@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import EmployeePages from "./EmployeePages";
-import "../App.css";
+import EmployeePages from "./components/EmployeePages";
+import "./App.css";
 
 class App extends Component {
   state = {data: []}
