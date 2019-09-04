@@ -1,62 +1,107 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import HelpForm from "./HelpForm";
 
 class Pager extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentPageIndex: 0,
-      currentPageLabel: props.currentPageLabel,
-      page: props.pages[0]
-    };
-  }
+  state = {
+    currentPageIndex: 0,
+    currentPageLabel: this.props.currentPageLabel,
+    page: this.props.pages[0],
+    pageLabels: this.props.pages.map((page, i) => {
+      return this.props.getLabel(i);
+    }),
+    showHelp: false,
+    response: ""
+  };
 
-  goPrevious() {
-    const { currentPageIndex } = this.state;
-    const { pages, pageLabels } = this.props;
+  goPrevious = () => {
+    const { currentPageIndex, pageLabels } = this.state;
+    const { pages } = this.props;
     const newIndex = (currentPageIndex - 1 + pages.length) % pages.length;
     this.setState({
       currentPageIndex: newIndex,
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
-  }
+  };
 
-  goNext() {
-    const { currentPageIndex } = this.state;
-    const { pages, pageLabels } = this.props;
+  goNext = () => {
+    const { currentPageIndex, pageLabels } = this.state;
+    const { pages } = this.props;
     const newIndex = (currentPageIndex + 1 + pages.length) % pages.length;
     this.setState({
       currentPageIndex: newIndex,
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
+  };
+
+  goToLabel = label => {
+    const { pageLabels } = this.state;
+    const { pages } = this.props;
+    const newIndex = pageLabels.indexOf(label);
+    this.setState({
+      currentPageIndex: newIndex,
+      currentPageLabel: pageLabels[newIndex],
+      page: pages[newIndex]
+    });
+  };
+
+  showHelpScreen = () => {
+    this.setState(prevState => ({
+      showHelp: !prevState.showHelp
+    }));
+  };
+
+  showErrorMessage = (response) => {
+    if (response > 200 && response < 205) {
+        this.setState({response: "Success: " + response + " - Form Submitted"})
+    }
+    if (response > 400) {
+        this.setState({response: "Error: " + response})
+    }
+  }
+
+  pageInfoUrl = (label) => {
+      
   }
 
   render() {
-    // returns the label for given page
-    console.log(this.props.getLabel(0));
-
-    // when provided a page label, returns a URL to call to fetch the page info for that label.
-    console.log(this.props.pageInfoUrl("Zain"));
-
-    /* url to send a POST support request to - of the form
-        {
-            "name": "User's Name",
-            "email": "User's Email Address",
-            "message": "The message entered by the user",
-        } */
-    console.log(this.props.supportRequestUrl);
-    // WHY IS THIS EMPTY IN THE CONSOLE???
-    console.log(
+    return this.state.showHelp ? (
+      <>
+        <HelpForm
+          url={this.props.supportRequestUrl}
+          toggleHelp={this.showHelpScreen}
+          showErrorMessage={this.showErrorMessage}
+        />
+        <p>{this.state.response}</p>
+      </>
+    ) : (
       this.props.children({
         page: this.state.page,
         goPrevious: this.goPrevious,
-        goNext: this.goNext
+        goNext: this.goNext,
+        goToLabel: this.goToLabel,
+        currentPageLabel: this.state.currentPageIndex,
+        pageLabels: this.state.pageLabels,
+        showHelpScreen: this.showHelpScreen
       })
     );
-
-    return <React.Fragment>{this.props.pages}</React.Fragment>;
   }
 }
+
+Pager.defaultProps = {
+  supportRequestUrl: null,
+  pageInfoUrl: null
+};
+
+Pager.propTypes = {
+  pages: PropTypes.node.isRequired,
+  getLabel: PropTypes.func.isRequired,
+  pageInfoUrl: PropTypes.func,
+  supportRequestUrl: PropTypes.string,
+  children: PropTypes.func.isRequired
+};
 
 export default Pager;
