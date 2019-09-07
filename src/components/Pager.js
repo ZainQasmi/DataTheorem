@@ -4,16 +4,23 @@ import PropTypes from "prop-types";
 import HelpForm from "./HelpForm";
 
 class Pager extends Component {
-  state = {
-    currentPageIndex: 0,
-    currentPageLabel: this.props.currentPageLabel,
-    page: this.props.pages[0],
-    pageLabels: this.props.pages.map((page, i) => {
-      return this.props.getLabel(i);
-    }),
-    showHelp: false,
-    response: ""
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPageIndex: 0,
+      currentPageLabel: this.props.currentPageLabel,
+      page: this.props.pages[0],
+      pageLabels: this.props.pages.map((page, i) => {
+        return this.props.getLabel(i);
+      }),
+      showHelp: false,
+      response: ""
+    };
+
+  }
+
+
 
   goPrevious = () => {
     const { currentPageIndex, pageLabels } = this.state;
