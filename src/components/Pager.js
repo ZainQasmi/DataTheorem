@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import HelpForm from "./HelpForm";
 
 class Pager extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,8 +25,6 @@ class Pager extends Component {
     this.pageInfoUrl = this.pageInfoUrl.bind(this);
   }
 
-
-
   goPrevious() {
     const { currentPageIndex, pageLabels } = this.state;
     const { pages } = this.props;
@@ -37,7 +34,7 @@ class Pager extends Component {
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
-  };
+  }
 
   goNext() {
     const { currentPageIndex, pageLabels } = this.state;
@@ -48,7 +45,7 @@ class Pager extends Component {
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
-  };
+  }
 
   goToLabel(label) {
     const { pageLabels } = this.state;
@@ -59,37 +56,32 @@ class Pager extends Component {
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
-  };
+  }
 
   showHelpScreen() {
     this.setState(prevState => ({
       showHelp: !prevState.showHelp
     }));
-  };
+  }
 
   showErrorMessage(response) {
     if (response > 200 && response < 205) {
-        this.setState({response: "Success: " + response + " - Form Submitted"})
+      this.setState({ response: "Success: " + response + " - Form Submitted" });
     }
     if (response > 400) {
-        this.setState({response: "Error: " + response})
+      this.setState({ response: "Error: " + response });
     }
   }
 
-  pageInfoUrl(label) {
-      
-  }
+  pageInfoUrl(label) {}
 
   render() {
     return this.state.showHelp ? (
-      <div>
-        <HelpForm
-          url={this.props.supportRequestUrl}
-          toggleHelp={this.showHelpScreen}
-          showErrorMessage={this.showErrorMessage}
-        />
-        <p>{this.state.response}</p>
-      </div>
+      <HelpForm
+        url={this.props.supportRequestUrl}
+        toggleHelp={this.showHelpScreen}
+        showErrorMessage={this.showErrorMessage}
+      />
     ) : (
       this.props.children({
         page: this.state.page,
