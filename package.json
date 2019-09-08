@@ -1,7 +1,6 @@
 {
   "name": "data-theorem-pager",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "formik": "^1.5.8",
@@ -9,8 +8,9 @@
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1"
   },
-  "main": "build/index.html",
+  "main": "lib/index.js",
   "scripts": {
+    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -34,6 +34,7 @@
   },
   "babel": {
     "presets": [
+      "es2015",
       "@babel/preset-env",
       "@babel/preset-react"
     ],
