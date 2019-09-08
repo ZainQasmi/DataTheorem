@@ -3,7 +3,11 @@ import EmployeePages from "./components/EmployeePages";
 import "./App.css";
 
 class App extends Component {
-  state = {data: []}
+
+  constructor(props) {
+    super(props);
+    this.state = {data: []};
+  }
   
   componentDidMount() {
     this.getEmployeeData()
