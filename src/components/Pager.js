@@ -18,12 +18,12 @@ class Pager extends Component {
       response: ""
     };
 
-    this.goPrevious.bind(this);
-    this.goNext.bind(this);
-    this.goToLabel.bind(this);
-    this.showHelpScreen.bind(this);
-    this.showErrorMessage.bind(this);
-    this.pageInfoUrl.bind(this);
+    this.goPrevious = this.goPrevious.bind(this);
+    this.goNext = this.goNext.bind(this);
+    this.goToLabel = this.goToLabel.bind(this);
+    this.showHelpScreen = this.showHelpScreen.bind(this);
+    this.showErrorMessage = this.showErrorMessage.bind(this);
+    this.pageInfoUrl = this.pageInfoUrl.bind(this);
   }
 
 
@@ -39,7 +39,7 @@ class Pager extends Component {
     });
   };
 
-  goNext = () => {
+  goNext() {
     const { currentPageIndex, pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = (currentPageIndex + 1 + pages.length) % pages.length;
@@ -50,7 +50,7 @@ class Pager extends Component {
     });
   };
 
-  goToLabel = label => {
+  goToLabel(label) {
     const { pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = pageLabels.indexOf(label);
@@ -61,13 +61,13 @@ class Pager extends Component {
     });
   };
 
-  showHelpScreen = () => {
+  showHelpScreen() {
     this.setState(prevState => ({
       showHelp: !prevState.showHelp
     }));
   };
 
-  showErrorMessage = (response) => {
+  showErrorMessage(response) {
     if (response > 200 && response < 205) {
         this.setState({response: "Success: " + response + " - Form Submitted"})
     }
@@ -76,7 +76,7 @@ class Pager extends Component {
     }
   }
 
-  pageInfoUrl = (label) => {
+  pageInfoUrl(label) {
       
   }
 
