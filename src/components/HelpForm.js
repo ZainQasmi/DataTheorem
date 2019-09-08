@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 
-const HelpForm = ({ url, toggleHelp, showErrorMessage }) => (
+// const HelpForm = function({ url, toggleHelp, showErrorMessage }) (
+function HelpForm({ url, toggleHelp, showErrorMessage }) {
+  return (
   <div>
     <h1>Help Form</h1>
     <Formik
@@ -97,7 +99,7 @@ const HelpForm = ({ url, toggleHelp, showErrorMessage }) => (
     />
     <button onClick={toggleHelp}>Return</button>
   </div>
-);
+  )};
 
 HelpForm.propTypes = {
   url: PropTypes.string,

@@ -18,11 +18,17 @@ class Pager extends Component {
       response: ""
     };
 
+    this.goPrevious.bind(this);
+    this.goNext.bind(this);
+    this.goToLabel.bind(this);
+    this.showHelpScreen.bind(this);
+    this.showErrorMessage.bind(this);
+    this.pageInfoUrl.bind(this);
   }
 
 
 
-  goPrevious = () => {
+  goPrevious() {
     const { currentPageIndex, pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = (currentPageIndex - 1 + pages.length) % pages.length;
