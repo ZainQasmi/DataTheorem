@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import HelpForm from "./HelpForm";
 
 class Pager extends Component {
