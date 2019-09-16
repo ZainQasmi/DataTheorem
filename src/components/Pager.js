@@ -77,11 +77,14 @@ class Pager extends Component {
 
   render() {
     return this.state.showHelp ? (
-      <HelpForm
-        url={this.props.supportRequestUrl}
-        toggleHelp={this.showHelpScreen}
-        showErrorMessage={this.showErrorMessage}
-      />
+      <>
+        <HelpForm
+          url={this.props.supportRequestUrl}
+          toggleHelp={this.showHelpScreen}
+          showErrorMessage={this.showErrorMessage}
+        />
+        <p>{this.state.response}</p>
+      </>
     ) : (
       this.props.children({
         page: this.state.page,
