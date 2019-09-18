@@ -70,9 +70,10 @@ class Pager extends Component {
     }
   }
 
-  pageInfoUrl = (label) => {
-      
-  }
+  // pageInfoUrl
+  // pageInfoIsLoading = 
+  // pageInfoError
+  // pageInfo
 
   render() {
     return this.state.showHelp ? (
