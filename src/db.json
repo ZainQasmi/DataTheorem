@@ -1,0 +1,37 @@
+{
+    "employees": [
+      {
+        "id": 1,
+        "first_name": "Iron",
+        "last_name": "Man",
+        "department": "Engineering",
+        "salary": 500000
+      },
+      {
+        "id": 2,
+        "first_name": "Captain",
+        "last_name": "America",
+        "department": "Leadership",
+        "salary": 250000
+      },
+      {
+        "id": 3,
+        "first_name": "Scarlet",
+        "last_name": "Witch",
+        "department": "Psionics",
+        "salary": 1000000
+      },
+      {
+        "id": 4,
+        "first_name": "Doctor",
+        "last_name": "Strange",
+        "department": "Medicine",
+        "salary": 750000
+      }
+    ],
+    "support": {
+      "name": "Zain Qasmi",
+      "email": "zainqasmi@gmail.com",
+      "message": "add33"
+    }
+  }
