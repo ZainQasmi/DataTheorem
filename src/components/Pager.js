@@ -15,12 +15,11 @@ class Pager extends Component {
         return this.props.getLabel(i);
       }),
       showHelp: false,
-      response: ""
+      response: "",
+      likes: 30
     };
 
   }
-
-
 
   goPrevious = () => {
     const { currentPageIndex, pageLabels } = this.state;
@@ -70,10 +69,16 @@ class Pager extends Component {
     }
   }
 
-  // pageInfoUrl
-  // pageInfoIsLoading = 
-  // pageInfoError
-  // pageInfo
+  pageInfoUrl = () => {
+
+  }
+  pageInfoIsLoading = () => {
+    
+  } 
+  pageInfoError = () => {
+  }
+  pageInfo = () => {
+  }
 
   render() {
     return this.state.showHelp ? (
@@ -93,7 +98,10 @@ class Pager extends Component {
         goToLabel: this.goToLabel,
         currentPageLabel: this.state.currentPageIndex,
         pageLabels: this.state.pageLabels,
-        showHelpScreen: this.showHelpScreen
+        showHelpScreen: this.showHelpScreen,
+        pageInfoIsLoading: this.pageInfoIsLoading,
+        pageInfo: this.pageInfo,
+        pageInfoError: this.pageInfoError
       })
     );
   }
