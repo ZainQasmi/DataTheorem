@@ -1,5 +1,5 @@
-import React from "react";
-import Pager from "./Pager";
+import React from 'react';
+import Pager from './Pager'
 
 export default function EmployeePages({ employees }) {
   return (
@@ -16,7 +16,7 @@ export default function EmployeePages({ employees }) {
         getLabel={
           i => `${employees[i].last_name}, ${employees[i].first_name}`
         }
-        pageInfoUrl={(label) => `https://www.example.com/employees/${label}`}
+        pageInfoUrl={label => `http://localhost:3000/employees/${label}`}
         supportRequestUrl="http://localhost:3000/support"
       >
         {({
@@ -58,7 +58,7 @@ export default function EmployeePages({ employees }) {
               <div>Error fetching info: {pageInfoError}</div>
             )}
             {pageInfo && (
-              <div>
+              <div key={pageInfo.id}>
                 # of Likes: {pageInfo.likes}
               </div>
             )}

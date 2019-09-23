@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import HelpForm from "./HelpForm";
 
 class Pager extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -16,10 +14,60 @@ class Pager extends Component {
       }),
       showHelp: false,
       response: "",
-      likes: 30
+      isPageInfoIsLoading: true,
+      isPageInfoError: false,
+      PageInfo: {
+        likes: []
+      }
     };
-
   }
+
+  componentDidMount() {
+    this.getThisEmployee(
+      this.props.pageInfoUrl(this.state.currentPageIndex + 1)
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.getLabel(prevState.currentPageIndex) !== prevProps.getLabel(this.state.currentPageIndex)) {
+      this.getThisEmployee(
+        this.props.pageInfoUrl(this.state.currentPageIndex + 1)
+      );
+    }
+  }
+
+  getThisEmployee = url => {
+    let data = this.state.PageInfo;
+    let responseCode;
+    fetch(url)
+      .then(function(response) {
+        responseCode = response.status;
+        return response.json();
+      })
+      .then(myJson => (data = myJson))
+      .then(() =>
+        responseCode > 400
+          ? this.setState({
+              isPageInfoError: responseCode,
+              isPageInfoIsLoading: false
+            })
+          : this.setState({
+              PageInfo: data,
+              isPageInfoIsLoading: false
+            })
+      );
+  };
+
+  goToLabel = label => {
+    const { pageLabels } = this.state;
+    const { pages } = this.props;
+    const newIndex = pageLabels.indexOf(label);
+    this.setState({
+      currentPageIndex: newIndex,
+      currentPageLabel: pageLabels[newIndex],
+      page: pages[newIndex]
+    });
+  };
 
   goPrevious = () => {
     const { currentPageIndex, pageLabels } = this.state;
@@ -43,42 +91,20 @@ class Pager extends Component {
     });
   };
 
-  goToLabel = label => {
-    const { pageLabels } = this.state;
-    const { pages } = this.props;
-    const newIndex = pageLabels.indexOf(label);
-    this.setState({
-      currentPageIndex: newIndex,
-      currentPageLabel: pageLabels[newIndex],
-      page: pages[newIndex]
-    });
-  };
-
   showHelpScreen = () => {
     this.setState(prevState => ({
       showHelp: !prevState.showHelp
     }));
   };
 
-  showErrorMessage = (response) => {
+  showErrorMessage = response => {
     if (response > 200 && response < 205) {
-        this.setState({response: "Success: " + response + " - Form Submitted"})
+      this.setState({ response: "Success: " + response + " - Form Submitted" });
     }
     if (response > 400) {
-        this.setState({response: "Error: " + response})
+      this.setState({ response: "Error: " + response });
     }
-  }
-
-  pageInfoUrl = () => {
-
-  }
-  pageInfoIsLoading = () => {
-    
-  } 
-  pageInfoError = () => {
-  }
-  pageInfo = () => {
-  }
+  };
 
   render() {
     return this.state.showHelp ? (
@@ -99,9 +125,9 @@ class Pager extends Component {
         currentPageLabel: this.state.currentPageIndex,
         pageLabels: this.state.pageLabels,
         showHelpScreen: this.showHelpScreen,
-        pageInfoIsLoading: this.pageInfoIsLoading,
-        pageInfo: this.pageInfo,
-        pageInfoError: this.pageInfoError
+        pageInfoIsLoading: this.state.isPageInfoIsLoading,
+        pageInfoError: this.state.isPageInfoError,
+        pageInfo: this.state.PageInfo
       })
     );
   }
