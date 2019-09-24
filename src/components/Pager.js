@@ -13,40 +13,55 @@ class Pager extends Component {
         return this.props.getLabel(i);
       }),
       showHelp: false,
-      response: ""
+      response: "",
+      isPageInfoIsLoading: true,
+      isPageInfoError: false,
+      PageInfo: {
+        likes: []
+      }
     };
-
-    this.goPrevious = this.goPrevious.bind(this);
-    this.goNext = this.goNext.bind(this);
-    this.goToLabel = this.goToLabel.bind(this);
-    this.showHelpScreen = this.showHelpScreen.bind(this);
-    this.showErrorMessage = this.showErrorMessage.bind(this);
-    this.pageInfoUrl = this.pageInfoUrl.bind(this);
   }
 
-  goPrevious() {
-    const { currentPageIndex, pageLabels } = this.state;
-    const { pages } = this.props;
-    const newIndex = (currentPageIndex - 1 + pages.length) % pages.length;
-    this.setState({
-      currentPageIndex: newIndex,
-      currentPageLabel: pageLabels[newIndex],
-      page: pages[newIndex]
-    });
+  componentDidMount() {
+    this.getThisEmployee(
+      this.props.pageInfoUrl(this.state.currentPageIndex + 1)
+    );
   }
 
-  goNext() {
-    const { currentPageIndex, pageLabels } = this.state;
-    const { pages } = this.props;
-    const newIndex = (currentPageIndex + 1 + pages.length) % pages.length;
-    this.setState({
-      currentPageIndex: newIndex,
-      currentPageLabel: pageLabels[newIndex],
-      page: pages[newIndex]
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.getLabel(prevState.currentPageIndex) !==
+      prevProps.getLabel(this.state.currentPageIndex)
+    ) {
+      this.getThisEmployee(
+        this.props.pageInfoUrl(this.state.currentPageIndex + 1)
+      );
+    }
   }
 
-  goToLabel(label) {
+  getThisEmployee = url => {
+    let data = this.state.PageInfo;
+    let responseCode;
+    fetch(url)
+      .then(function(response) {
+        responseCode = response.status;
+        return response.json();
+      })
+      .then(myJson => (data = myJson))
+      .then(() =>
+        responseCode > 400
+          ? this.setState({
+              isPageInfoError: responseCode,
+              isPageInfoIsLoading: false
+            })
+          : this.setState({
+              PageInfo: data,
+              isPageInfoIsLoading: false
+            })
+      );
+  };
+
+  goToLabel = label => {
     const { pageLabels } = this.state;
     const { pages } = this.props;
     const newIndex = pageLabels.indexOf(label);
@@ -55,27 +70,47 @@ class Pager extends Component {
       currentPageLabel: pageLabels[newIndex],
       page: pages[newIndex]
     });
-  }
+  };
 
-  showHelpScreen() {
+  goPrevious = () => {
+    const { currentPageIndex, pageLabels } = this.state;
+    const { pages } = this.props;
+    const newIndex = (currentPageIndex - 1 + pages.length) % pages.length;
+    this.setState({
+      currentPageIndex: newIndex,
+      currentPageLabel: pageLabels[newIndex],
+      page: pages[newIndex]
+    });
+  };
+
+  goNext = () => {
+    const { currentPageIndex, pageLabels } = this.state;
+    const { pages } = this.props;
+    const newIndex = (currentPageIndex + 1 + pages.length) % pages.length;
+    this.setState({
+      currentPageIndex: newIndex,
+      currentPageLabel: pageLabels[newIndex],
+      page: pages[newIndex]
+    });
+  };
+
+  showHelpScreen = () => {
     this.setState(prevState => ({
       showHelp: !prevState.showHelp
     }));
-  }
+  };
 
-  showErrorMessage(response) {
+  showErrorMessage = response => {
     if (response > 200 && response < 205) {
       this.setState({ response: "Success: " + response + " - Form Submitted" });
     }
     if (response > 400) {
       this.setState({ response: "Error: " + response });
     }
-  }
-
-  pageInfoUrl(label) {}
+  };
 
   render() {
-    return this.state.showHelp ? (
+    return this.state.showHelp && this.props.supportRequestUrl ? (
       <>
         <HelpForm
           url={this.props.supportRequestUrl}
@@ -92,7 +127,10 @@ class Pager extends Component {
         goToLabel: this.goToLabel,
         currentPageLabel: this.state.currentPageIndex,
         pageLabels: this.state.pageLabels,
-        showHelpScreen: this.showHelpScreen
+        showHelpScreen: this.showHelpScreen,
+        pageInfoIsLoading: this.state.isPageInfoIsLoading,
+        pageInfoError: this.state.isPageInfoError,
+        pageInfo: this.state.PageInfo
       })
     );
   }
