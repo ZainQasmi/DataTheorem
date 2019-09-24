@@ -1,7 +1,7 @@
 
 ## Importing library
 
-import {Pager} from "data-theorem-pager"
+```import {Pager} from "data-theorem-pager"```
 
 ## Getting started
 
