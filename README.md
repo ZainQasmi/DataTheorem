@@ -16,6 +16,10 @@
 
 Sample readme "db.json" inside sample directory
 
+## Testing library locally 
+
+* Please try the branch [rolling-back-to-es5](https://github.com/ZainQasmi/DataTheorem/tree/rolling-back-to-es5)
+
 ## [### DEFAULT README ###]
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
