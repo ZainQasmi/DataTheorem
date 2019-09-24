@@ -1,3 +1,22 @@
+
+## Importing library
+
+import {Pager} from "data-theorem-pager"
+
+## Getting started
+
+* npm install https://github.com/ZainQasmi/DataTheorem
+* npm install 
+* npm start
+
+## Testing on local backend
+
+* npm install -g json-server
+* json-server --watch db.json
+
+Sample readme "db.json" inside sample directory
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
