@@ -29,7 +29,10 @@ class Pager extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.getLabel(prevState.currentPageIndex) !== prevProps.getLabel(this.state.currentPageIndex)) {
+    if (
+      prevProps.getLabel(prevState.currentPageIndex) !==
+      prevProps.getLabel(this.state.currentPageIndex)
+    ) {
       this.getThisEmployee(
         this.props.pageInfoUrl(this.state.currentPageIndex + 1)
       );
@@ -107,7 +110,7 @@ class Pager extends Component {
   };
 
   render() {
-    return this.state.showHelp ? (
+    return this.state.showHelp && this.props.supportRequestUrl ? (
       <>
         <HelpForm
           url={this.props.supportRequestUrl}

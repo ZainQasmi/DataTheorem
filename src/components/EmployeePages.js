@@ -38,7 +38,7 @@ export default function EmployeePages({ employees }) {
                   <option
                     key={label}
                     value={label}
-                    // selected={label === currentPageLabel}
+                    selected={label === currentPageLabel}
                   >
                     {label}
                   </option>
