@@ -7,14 +7,22 @@
 
 * npm install https://github.com/ZainQasmi/DataTheorem
 * npm install 
+* npm add @babel/runtime
 * npm start
 
 ## Testing on local backend
 
-* npm install -g json-server
-* json-server --watch db.json
+* Update URL props being passed to Pager Component
+```
+pageInfoUrl={label => `http://localhost:3000/employees/${label}`}
+supportRequestUrl="http://localhost:3000/support"
+```
 
-Sample readme "db.json" inside sample directory
+* ```npm install -g json-server```
+* ```json-server --watch db.json```
+
+* Sample database "db.json" available inside sample directory
+
 
 ## Testing library locally 
 
